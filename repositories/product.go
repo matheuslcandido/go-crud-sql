@@ -48,6 +48,27 @@ func UpdateProduct(logger *log.Logger, db *sql.DB, product entity.Product) error
 	return nil
 }
 
+func DeleteProduct(logger *log.Logger, db *sql.DB, id string) error {
+	logger.Printf("Starting delete product: %v from DB", id)
+
+	statement, err := db.Prepare("DELETE FROM produtos WHERE id = $1")
+	if err != nil {
+		logger.Print(err)
+		return err
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(id)
+	if err != nil {
+		logger.Print(err)
+		return err
+	}
+
+	logger.Printf("Product: %v deleted from DB", id)
+
+	return nil
+}
+
 func SelectOneProduct(logger *log.Logger, db *sql.DB, id string) (*entity.Product, error) {
 	logger.Printf("Starting select product: %v on DB", id)
 

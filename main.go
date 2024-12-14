@@ -61,5 +61,19 @@ func main() {
 		logger.Printf("Product data from selectAll: %v", selectedProduct)
 	}
 
+	err = repositories.DeleteProduct(logger, db, produto2.Id)
+	if err != nil {
+		panic(err)
+	}
+
+	selectedProducts, err = repositories.SelectAllProducts(logger, db)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, selectedProduct := range selectedProducts {
+		logger.Print("Product data from selectAll", selectedProduct)
+	}
+
 	logger.Print("Application finished!")
 }
